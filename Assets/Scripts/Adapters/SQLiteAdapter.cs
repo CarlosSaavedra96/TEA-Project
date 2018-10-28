@@ -107,51 +107,67 @@ public class SQLiteAdapter
             });
     }
 
-    public void Insert (string[] values, string table)
+    public int Insert (string[] values, string table)
     {
-        string insertQuery = "INSERT INTO " + table + " VALUES (" + string.Join(", ", values) + ")";
+        return QueryNonQuery("INSERT INTO " + table + " VALUES (" + string.Join(", ", values) + ")");
     }
 
-    public void Insert(string[] fields, string[] values, string table)
+    public int Insert(string[] fields, string[] values, string table)
     {
-        string insertQuery = "INSERT INTO " + table + "(" + string.Join(", ", fields) + ")" + " VALUES (" + string.Join(", ", values) + ")";
+        return QueryNonQuery("INSERT INTO " + table + "(" + string.Join(", ", fields) + ")" + " VALUES (" + string.Join(", ", values) + ")");
     }
 
-    public void Delete(string table)
+    public int Delete(string table)
     {
-        string deleteQuery = "DELETE FROM " + table;
+        return QueryNonQuery("DELETE FROM " + table);
     }
 
-    public void Delete(string condition, string table)
+    public int Delete(string condition, string table)
     {
-        string delteQuery = "DELETE FROM " + table + " WHERE " + condition;
+        return QueryNonQuery("DELETE FROM " + table + " WHERE " + condition);
     }
 
-    public void Update(string fieldQuery, string table)
+    public int Update(string fieldQuery, string table)
     {
-        string updateQuery = "UPDATE " + table + " SET " + fieldQuery;
+        return QueryNonQuery("UPDATE " + table + " SET " + fieldQuery);
     }
 
-    public void Update(string condition, string fieldQuery, string table)
+    public int Update(string condition, string fieldQuery, string table)
     {
-        string updateQuery = "UPDATE " + table + " SET " + fieldQuery + " WHERE " + condition;
+        return QueryNonQuery("UPDATE " + table + " SET " + fieldQuery + " WHERE " + condition);
     }
 
-    public void Execute (string table)
+    public IDataReader Execute (string table)
     {
-        string queryString = "SELECT " + this.selectQuery + " FROM  " + table;
-        if (!this.whereQuery.Equals(""))
+        string queryString = "SELECT " + selectQuery + " FROM  " + table;
+        if (!whereQuery.Equals(""))
         {
-            queryString = " WHERE " + this.whereQuery;
+            queryString = " WHERE " + whereQuery;
         }
 
-        this.selectQuery = "";
-        this.whereQuery = "";
+        selectQuery = "";
+        whereQuery = "";
+        return Query(queryString);
     }
 
-    public void Query(string queryString)
+    public IDataReader Query(string queryString)
     {
-        
+        IDbCommand queryCommand;
+        connection.Open();
+        queryCommand = this.connection.CreateCommand();
+        queryCommand.CommandText = queryString;
+        connection.Close();
+        return queryCommand.ExecuteReader();
+    }
+
+    private int QueryNonQuery(string queryString)
+    {
+        IDbCommand queryCommand;
+        connection.Open();
+        queryCommand = connection.CreateCommand();
+        queryCommand.CommandText = queryString;
+        connection.Close();
+        return queryCommand.ExecuteNonQuery();
     }
 
     private void CheckValueSegment (bool condition, actionQuery actionCorrect, actionQuery actionInvalid)
