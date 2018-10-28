@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
+using Entities.Utils;
 
 namespace Entities.Adapters
 {
     public class SQLiteAdapter
     {
         private static SQLiteAdapter instance = null;
-        private readonly string databasePath = Application.dataPath + "/Database/TeaProjectDB.db";
         private IDbConnection connection;
         private string selectQuery = "*";
         private string whereQuery = "";
@@ -24,7 +23,7 @@ namespace Entities.Adapters
             if (connection == null)
             {
                 Debug.Log("Connected");
-                connection = (IDbConnection)new SqliteConnection("URI=file:" + this.databasePath);
+                connection = (IDbConnection)new SqliteConnection("URI=file:" + Functions.GetPath("DataBase", Constants.dataBaseFileName));
                 connection.Open();
             }
         }
@@ -222,7 +221,7 @@ namespace Entities.Adapters
                 actionInvalid();
             }
         }
-        
+
         public IDbConnection GetConnection ()
         {
             return connection;
