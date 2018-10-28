@@ -40,6 +40,10 @@ public class GvrReticlePointer : GvrBasePointer {
   /// Growth speed multiplier for the reticle/
   public float reticleGrowthSpeed = 8.0f;
 
+    //Erik Modificacion
+    private float gazeStartTime;
+    private GameObject gazeAt;
+
   /// Sorting order to use for the reticle's renderer.
   /// Range values come from https://docs.unity3d.com/ScriptReference/Renderer-sortingOrder.html.
   /// Default value 32767 ensures gaze reticle is always rendered on top.
@@ -129,6 +133,10 @@ public class GvrReticlePointer : GvrBasePointer {
 
   protected override void Start() {
     base.Start();
+
+        //Modificacion Erik
+        gazeStartTime = -1f;
+        gazeAt = null;
 
     Renderer rendererComponent = GetComponent<Renderer>();
     rendererComponent.sortingOrder = reticleSortingOrder;
