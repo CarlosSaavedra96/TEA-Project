@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
 
@@ -16,7 +17,16 @@ namespace Entities.Adapters
 
         private SQLiteAdapter()
         {
-            connection = (IDbConnection)new SqliteConnection("URI=file:" + this.databasePath);
+        }
+
+        public void Connect()
+        {
+            if (connection == null)
+            {
+                Debug.Log("Connected");
+                connection = (IDbConnection)new SqliteConnection("URI=file:" + this.databasePath);
+                connection.Open();
+            }
         }
 
         public static SQLiteAdapter NewInstance()
@@ -139,37 +149,66 @@ namespace Entities.Adapters
             return QueryNonQuery("UPDATE " + table + " SET " + fieldQuery + " WHERE " + condition);
         }
 
-        public IDataReader Execute(string table)
+        public List<string[]> Execute(string table)
         {
             string queryString = "SELECT " + selectQuery + " FROM  " + table;
             if (!whereQuery.Equals(""))
             {
                 queryString = " WHERE " + whereQuery;
             }
-
-            selectQuery = "";
-            whereQuery = "";
             return Query(queryString);
         }
 
-        public IDataReader Query(string queryString)
+        private List<string[]> Query(string queryString)
         {
             IDbCommand queryCommand;
-            connection.Open();
-            queryCommand = this.connection.CreateCommand();
-            queryCommand.CommandText = queryString;
+            IDataReader result;
+            List<string[]> result_list = new List<string[]>();
+            Connect();
+            using (queryCommand = this.connection.CreateCommand())
+            {
+                queryCommand.CommandText = queryString;
+                result = queryCommand.ExecuteReader();
+                while (result.Read())
+                {
+                    var element = new string[result.FieldCount];
+                    for (var c = 0; c < result.FieldCount; c++)
+                    {
+                        element[c] = result.GetValue(c).ToString();
+                    }
+                    result_list.Add(element);
+                }
+            }
+            result.Close();
+            result = null;
+            queryCommand.Dispose();
+            queryCommand = null;
+            connection.Dispose();
             connection.Close();
-            return queryCommand.ExecuteReader();
+            connection = null;
+            selectQuery = "*";
+            whereQuery = "";
+            return result_list;
         }
 
         private int QueryNonQuery(string queryString)
         {
             IDbCommand queryCommand;
-            connection.Open();
-            queryCommand = connection.CreateCommand();
-            queryCommand.CommandText = queryString;
+            int result;
+            Connect();
+            using (queryCommand = connection.CreateCommand())
+            {
+                queryCommand.CommandText = queryString;
+                result = queryCommand.ExecuteNonQuery();
+            }
+            queryCommand.Dispose();
+            queryCommand = null;
+            connection.Dispose();
             connection.Close();
-            return queryCommand.ExecuteNonQuery();
+            connection = null;
+            selectQuery = "*";
+            whereQuery = "";
+            return result;
         }
 
         private void CheckValueSegment(bool condition, actionQuery actionCorrect, actionQuery actionInvalid)
