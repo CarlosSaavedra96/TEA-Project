@@ -17,6 +17,9 @@ namespace Entities.Controllers
         {
             user = new UserModel();
 
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+            DontDestroyOnLoad(this.gameObject);
+
             SignInButton = GameObject.Find("SignInButton").GetComponent<Button>();
             NewUserButton = GameObject.Find("NewUserButton").GetComponent<Button>();
             ExportUserButton = GameObject.Find("ExportUserButton").GetComponent<Button>();
@@ -73,12 +76,17 @@ namespace Entities.Controllers
 
         void NewUserButtonClicked()
         {
-            SceneManager.LoadScene("UserRegisterScene");
+            SceneManager.LoadScene("UserRegisterScene", LoadSceneMode.Single);
         }
 
         void ExportUserButtonClicked()
         {
 
+        }
+
+        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(arg0.name));
         }
     }
 }

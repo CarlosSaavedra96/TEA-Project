@@ -10,7 +10,7 @@ namespace Entities.Controllers
     public class UserRegisterScene : MonoBehaviour
     {
         private Button RegisterButton, ReturnButton;
-        private InputField UserNameTextInput, FirstNameTextInput, LastNameTextInput;
+        private InputField UserNameRTextInput, FirstNameTextInput, LastNameTextInput;
         private UserModel user;
         
         void Awake()
@@ -18,10 +18,11 @@ namespace Entities.Controllers
             user = new UserModel();
 
             DontDestroyOnLoad(this.gameObject);
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
             RegisterButton = GameObject.Find("RegisterButton").GetComponent<Button>();
             ReturnButton = GameObject.Find("ReturnButton").GetComponent<Button>();
-            UserNameTextInput = GameObject.Find("UserNameTextInput").GetComponent<InputField>();
+            UserNameRTextInput = GameObject.Find("UserNameRTextInput").GetComponent<InputField>();
             FirstNameTextInput = GameObject.Find("FirstNameTextInput").GetComponent<InputField>();
             LastNameTextInput = GameObject.Find("LastNameTextInput").GetComponent<InputField>();
         }
@@ -65,15 +66,21 @@ namespace Entities.Controllers
                 "last_name",
                 "image" }, 
                 new string[] {
-                UserNameTextInput.text,
-                FirstNameTextInput.text,
-                LastNameTextInput.text,
-                ""});
+                "'" + UserNameRTextInput.text + "'",
+                "'" + FirstNameTextInput.text + "'",
+                "'" + LastNameTextInput.text + "'",
+                "''"});
+            SceneManager.LoadScene("LoginScene", LoadSceneMode.Single);
         }
 
         void ReturnButtonClicked()
         {
-            SceneManager.LoadScene("LoginScene");
+            SceneManager.LoadScene("LoginScene", LoadSceneMode.Single);
+        }
+
+        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(arg0.name));
         }
     }
 }
