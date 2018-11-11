@@ -12,7 +12,10 @@ namespace Entities.Controllers
         private Button RegisterButton, ReturnButton;
         private InputField UserNameTextInput, FirstNameTextInput, LastNameTextInput;
         private UserModel user;
-        
+
+        /*
+        * Init components
+        */
         void Awake()
         {
             user = new UserModel();
@@ -26,6 +29,9 @@ namespace Entities.Controllers
             LastNameTextInput = GameObject.Find("LastNameTextInput").GetComponent<InputField>();
         }
 
+        /*
+        * onClick events assigned to buttons
+        */
         void OnEnable()
         {
             RegisterButton.onClick.AddListener(() => { OnClicked(GameObject.Find("RegisterButton")); });
@@ -44,6 +50,9 @@ namespace Entities.Controllers
 
         }
 
+        /*
+        * Manage click events
+        */
         void OnClicked (GameObject objectSender)
         {
             switch (objectSender.name)
@@ -57,6 +66,9 @@ namespace Entities.Controllers
             }
         }
 
+        /*
+         * method for registering users
+         */ 
         void RegisterButtonClicked()
         {
             user.Insert(new string[] {
@@ -71,6 +83,9 @@ namespace Entities.Controllers
                 ""});
         }
 
+        /*
+        * Este metodo no se ocupa, es para el debug nomas
+        */
         void ReturnButtonClicked()
         {
             SceneManager.LoadScene("LoginScene");
