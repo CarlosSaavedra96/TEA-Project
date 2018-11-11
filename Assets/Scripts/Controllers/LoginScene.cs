@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Entities.Models;
+using UnityEngine.SceneManagement;
 using Entities.Utils.Storage;
 
 namespace Entities.Controllers
@@ -59,12 +60,20 @@ namespace Entities.Controllers
 
         void SignInButtonClicked()
         {
-            
+            var user_field = user.getUserByUserName(UserNameTextInput.text);
+            if (user_field.Count == 0)
+            {
+                print("Not exists a user with this username.");
+            } else
+            {
+                print("Start log in");
+                print(user_field[0][1]);
+            }
         }
 
         void NewUserButtonClicked()
         {
-
+            SceneManager.LoadScene("UserRegisterScene");
         }
 
         void ExportUserButtonClicked()
