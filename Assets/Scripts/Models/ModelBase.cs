@@ -54,6 +54,8 @@ namespace Entities.Models
 
         public int Insert(string[] fields, string[] values)
         {
+            Debug.Log(string.Join(", ", fields));
+            Debug.Log(string.Join(", ", values));
             return connection.Insert(fields, values, name);
         }
 

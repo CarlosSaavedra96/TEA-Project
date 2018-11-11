@@ -56,7 +56,7 @@ namespace Entities.Adapters
                     this.selectQuery = string.Join(", ", selectQuery);
                 },
                 () => {
-                    this.selectQuery = ", " + string.Join(", ", selectQuery);
+                    this.selectQuery += ", " + string.Join(", ", selectQuery);
                 });
         }
 
@@ -73,7 +73,7 @@ namespace Entities.Adapters
                     this.whereQuery = whereQuery;
                 },
                 () => {
-                    this.whereQuery = " AND " + whereQuery;
+                    this.whereQuery += " AND " + whereQuery;
                 });
         }
 
@@ -85,7 +85,7 @@ namespace Entities.Adapters
                     this.whereQuery = whereQuery;
                 },
                 () => {
-                    this.whereQuery = " OR " + whereQuery;
+                    this.whereQuery += " OR " + whereQuery;
                 });
         }
 
@@ -102,7 +102,7 @@ namespace Entities.Adapters
                     this.whereQuery = field + " " + op + " " + value;
                 },
                 () => {
-                    this.whereQuery = " AND " + field + " " + op + " " + value;
+                    this.whereQuery += " AND " + field + " " + op + " " + value;
                 });
         }
 
@@ -114,7 +114,7 @@ namespace Entities.Adapters
                     this.whereQuery = field + " " + op + " " + value;
                 },
                 () => {
-                    this.whereQuery = " OR " + field + " " + op + " " + value;
+                    this.whereQuery += " OR " + field + " " + op + " " + value;
                 });
         }
 
@@ -153,7 +153,7 @@ namespace Entities.Adapters
             string queryString = "SELECT " + selectQuery + " FROM  " + table;
             if (!whereQuery.Equals(""))
             {
-                queryString = " WHERE " + whereQuery;
+                queryString += " WHERE " + whereQuery;
             }
             return Query(queryString);
         }
