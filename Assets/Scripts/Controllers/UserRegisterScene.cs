@@ -13,6 +13,9 @@ namespace Entities.Controllers
         private InputField UserNameRTextInput, FirstNameTextInput, LastNameTextInput;
         private UserModel user;
 
+        public GameObject dialogResult;
+        public Text txtSuccessfull;
+
         /*
         * Init components
         */
@@ -28,6 +31,7 @@ namespace Entities.Controllers
             UserNameRTextInput = GameObject.Find("UserNameRTextInput").GetComponent<InputField>();
             FirstNameTextInput = GameObject.Find("FirstNameTextInput").GetComponent<InputField>();
             LastNameTextInput = GameObject.Find("LastNameTextInput").GetComponent<InputField>();
+            txtSuccessfull = GameObject.Find("successfulText").GetComponent<Text>();
         }
 
         /*
@@ -37,6 +41,9 @@ namespace Entities.Controllers
         {
             RegisterButton.onClick.AddListener(() => { OnClicked(GameObject.Find("RegisterButton")); });
             ReturnButton.onClick.AddListener(() => { OnClicked(GameObject.Find("ReturnButton")); });
+
+            dialogResult.SetActive(false);
+
         }
 
         // Use this for initialization
@@ -72,7 +79,8 @@ namespace Entities.Controllers
          */ 
         void RegisterButtonClicked()
         {
-            user.Insert(new string[] {
+
+            int result = user.Insert(new string[] {
                 "user_name",
                 "first_name",
                 "last_name",
@@ -82,13 +90,16 @@ namespace Entities.Controllers
                 "'" + FirstNameTextInput.text + "'",
                 "'" + LastNameTextInput.text + "'",
                 "''"});
-            SceneManager.LoadScene("LoginScene", LoadSceneMode.Single);
+
+            txtSuccessfull.text = "Bienvenido " + FirstNameTextInput.text;
+            dialogResult.SetActive(true);
+
         }
 
         /*
         * Este metodo no se ocupa, es para el debug nomas
         */
-        void ReturnButtonClicked()
+        public void ReturnButtonClicked()
         {
             SceneManager.LoadScene("LoginScene", LoadSceneMode.Single);
         }
