@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.UI;
 using Entities.Models;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,8 @@ namespace Entities.Controllers
         void Awake()
         {
             user = new UserModel();
+
+            SceneManager.sceneLoaded += OnLoadSceneCallback;
 
             SignInButton = GameObject.Find("SignInButton").GetComponent<Button>();
             NewUserButton = GameObject.Find("NewUserButton").GetComponent<Button>();
@@ -73,12 +76,17 @@ namespace Entities.Controllers
 
         void NewUserButtonClicked()
         {
-            SceneManager.LoadScene("UserRegisterScene");
+            SceneManager.LoadScene("UserRegisterScene", LoadSceneMode.Additive);
         }
 
         void ExportUserButtonClicked()
         {
 
+        }
+
+        private void OnLoadSceneCallback(Scene arg0, LoadSceneMode arg1)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(arg0.name));
         }
     }
 }

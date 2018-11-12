@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 34140398}
   - component: {fileID: 34140397}
   m_Layer: 0
-  m_Name: UserNameTextInput
+  m_Name: UserNameRTextInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
