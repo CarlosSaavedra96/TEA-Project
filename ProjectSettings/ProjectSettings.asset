@@ -111,7 +111,7 @@ PlayerSettings:
   psp2PowerMode: 0
   psp2AcquireBGM: 1
   vulkanEnableSetSRGBWrite: 0
-  vulkanUseSWCommandBuffers: 0
+  vulkanUseSWCommandBuffers: 1
   m_SupportedAspectRatios:
     4:3: 1
     5:4: 1
