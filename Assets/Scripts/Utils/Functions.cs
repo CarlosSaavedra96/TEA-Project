@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 
 namespace Entities.Utils
 {
@@ -34,7 +35,18 @@ namespace Entities.Utils
 #if UNITY_EDITOR
             return Application.dataPath + "/" + path + "/" + filename;
 #elif UNITY_ANDROID
-            return Application.persistentDataPath + filename;
+             string _filepath = Application.persistentDataPath + filename;
+            if (!File.Exists(_filepath))
+            {
+                //Debug.Log("Check in");
+                WWW loadDB = new WWW("jar:file://" + Application.dataPath +
+                                     "!/assets/" + filename);
+
+                while (!loadDB.isDone) { }
+                File.WriteAllBytes(_filepath, loadDB.bytes);
+            }
+
+            return _filepath;
 #elif UNITY_IPHONE
             return Application.persistentDataPath + "/" + filename;
 #else
