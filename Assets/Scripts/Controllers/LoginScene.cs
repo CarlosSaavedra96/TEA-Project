@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 using UnityEngine.UI;
 using Entities.Models;
 using UnityEngine.SceneManagement;
@@ -13,6 +12,10 @@ namespace Entities.Controllers
         private Button SignInButton, NewUserButton, ExportUserButton;
         private InputField UserNameTextInput;
         private UserModel user;
+
+        public GameObject Alert;
+        public Text Alert_txt;
+        public Button Alert_close;
         
         void Awake()
         {
@@ -24,6 +27,7 @@ namespace Entities.Controllers
             NewUserButton = GameObject.Find("NewUserButton").GetComponent<Button>();
             ExportUserButton = GameObject.Find("ExportUserButton").GetComponent<Button>();
             UserNameTextInput = GameObject.Find("UserNameTextInput").GetComponent<InputField>();
+            Alert.SetActive(false);
         }
 
         void OnEnable()
@@ -34,8 +38,10 @@ namespace Entities.Controllers
         }
 
         // Use this for initialization
-        void Start()
+        public void Start()
         {
+            // deshabilita VR
+            UnityEngine.XR.XRSettings.enabled = false;
             print("Start Login Scene");
         }
 
@@ -64,14 +70,23 @@ namespace Entities.Controllers
         void SignInButtonClicked()
         {
             var user_field = user.getUserByUserName(UserNameTextInput.text);
+          
             if (user_field.Count == 0)
             {
                 print("Not exists a user with this username.");
+                Alert_txt.text = "No existe el usuario " + UserNameTextInput.text;
+                Alert.SetActive(true);
+
             } else
             {
                 print("Start log in");
                 print(user_field[0][1]);
+                SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
             }
+        }
+
+        public void closeAlert() {
+            Alert.SetActive(false);
         }
 
         void NewUserButtonClicked()
