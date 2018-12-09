@@ -44,10 +44,7 @@ namespace Entities.Controllers
             UnityEngine.XR.XRSettings.enabled = false;
             print("Start Login Scene");
             //  PlayerPrefs.DeleteKey("user");
-            if (PlayerPrefs.GetString("user") != "")
-            {
-                SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
-            }
+            UserNameTextInput.text = PlayerPrefs.GetString("user");
         }
 
         // Update is called once per frame
