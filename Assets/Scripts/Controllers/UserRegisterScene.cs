@@ -93,6 +93,7 @@ namespace Entities.Controllers
 
             txtSuccessfull.text = "Bienvenido " + FirstNameTextInput.text;
             dialogResult.SetActive(true);
+            PlayerPrefs.SetString("user", UserNameRTextInput.text);
 
         }
 

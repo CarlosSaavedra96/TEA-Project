@@ -43,6 +43,11 @@ namespace Entities.Controllers
             // deshabilita VR
             UnityEngine.XR.XRSettings.enabled = false;
             print("Start Login Scene");
+            //  PlayerPrefs.DeleteKey("user");
+            if (PlayerPrefs.GetString("user") != "")
+            {
+                SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
+            }
         }
 
         // Update is called once per frame
@@ -81,6 +86,7 @@ namespace Entities.Controllers
             {
                 print("Start log in");
                 print(user_field[0][1]);
+                PlayerPrefs.SetString("user", user_field[0][1]);
                 SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
             }
         }
