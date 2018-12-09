@@ -99,7 +99,23 @@ namespace Entities.Controllers
 
         void ExportUserButtonClicked()
         {
+            var user_field = user.getUserByUserName(UserNameTextInput.text);
 
+            if (user_field.Count == 0)
+            {
+                print("Not exists a user with this username.");
+                Alert_txt.text = "No existe el usuario " + UserNameTextInput.text;
+                Alert.SetActive(true);
+
+            }
+            else
+            {
+                print("User data exported");
+                user_field.Insert(0, new string[] { "user_id", "user_name", "first_name", "last_name", "image" });
+                StorageCSV.Save("user_data_" + UserNameTextInput.text + ".csv", user_field);
+                Alert_txt.text = "Se exporta la información del usuario " + UserNameTextInput.text + " correctamente";
+                Alert.SetActive(true);
+            }
         }
 
         private void OnLoadSceneCallback(Scene arg0, LoadSceneMode arg1)
