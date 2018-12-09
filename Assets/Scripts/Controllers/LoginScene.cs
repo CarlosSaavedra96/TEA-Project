@@ -43,6 +43,8 @@ namespace Entities.Controllers
             // deshabilita VR
             UnityEngine.XR.XRSettings.enabled = false;
             print("Start Login Scene");
+            //  PlayerPrefs.DeleteKey("user");
+            UserNameTextInput.text = PlayerPrefs.GetString("user");
         }
 
         // Update is called once per frame
@@ -81,6 +83,7 @@ namespace Entities.Controllers
             {
                 print("Start log in");
                 print(user_field[0][1]);
+                PlayerPrefs.SetString("user", user_field[0][1]);
                 SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
             }
         }
@@ -96,7 +99,23 @@ namespace Entities.Controllers
 
         void ExportUserButtonClicked()
         {
+            var user_field = user.getUserByUserName(UserNameTextInput.text);
 
+            if (user_field.Count == 0)
+            {
+                print("Not exists a user with this username.");
+                Alert_txt.text = "No existe el usuario " + UserNameTextInput.text;
+                Alert.SetActive(true);
+
+            }
+            else
+            {
+                print("User data exported");
+                user_field.Insert(0, new string[] { "user_id", "user_name", "first_name", "last_name", "image" });
+                StorageCSV.Save("user_data_" + UserNameTextInput.text + ".csv", user_field);
+                Alert_txt.text = "Se exporta la información del usuario " + UserNameTextInput.text + " correctamente";
+                Alert.SetActive(true);
+            }
         }
 
         private void OnLoadSceneCallback(Scene arg0, LoadSceneMode arg1)
