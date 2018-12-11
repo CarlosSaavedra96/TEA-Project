@@ -23,8 +23,9 @@ namespace Entities.Adapters
             if (connection == null)
             {
                 Debug.Log("Connected");
-                connection = (IDbConnection)new SqliteConnection("URI=file:" + Functions.GetPath("DataBase", Constants.dataBaseFileName));
+                connection = (IDbConnection)new SqliteConnection("URI=file:" + Functions.GetPath("Database", Constants.dataBaseFileName));
                 connection.Open();
+                Debug.Log(connection);
             }
         }
 

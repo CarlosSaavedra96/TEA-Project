@@ -35,10 +35,10 @@ namespace Entities.Utils
 #if UNITY_EDITOR
             return Application.dataPath + "/" + path + "/" + filename;
 #elif UNITY_ANDROID
-             string _filepath = Application.persistentDataPath + filename;
+             string _filepath = Application.persistentDataPath+"/"+ filename;
             if (!File.Exists(_filepath))
             {
-                //Debug.Log("Check in");
+                Debug.Log("Check in");
                 WWW loadDB = new WWW("jar:file://" + Application.dataPath +
                                      "!/assets/" + filename);
 
