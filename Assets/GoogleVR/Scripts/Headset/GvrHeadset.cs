@@ -157,7 +157,9 @@ public class GvrHeadset : MonoBehaviour {
   }
 
   void Awake() {
-    if (instance != null) {
+        UnityEngine.XR.XRSettings.enabled = true;
+
+        if (instance != null) {
       Debug.LogError("More than one GvrHeadset instance was found in your scene. "
         + "Ensure that there is only one GvrHeadset.");
       this.enabled = false;

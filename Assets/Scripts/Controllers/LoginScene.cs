@@ -84,7 +84,10 @@ namespace Entities.Controllers
                 print("Start log in");
                 print(user_field[0][1]);
                 PlayerPrefs.SetString("user", user_field[0][1]);
+
                 SceneManager.LoadScene("LevelScene", LoadSceneMode.Single);
+
+                UnityEngine.XR.XRSettings.enabled = true;
             }
         }
 
