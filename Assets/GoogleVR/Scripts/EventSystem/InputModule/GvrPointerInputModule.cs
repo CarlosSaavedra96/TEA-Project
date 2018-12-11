@@ -180,7 +180,9 @@ public class GvrPointerInputModule : BaseInputModule, IGvrInputModuleController 
   }
 
   protected override void Awake() {
-    base.Awake();
+        UnityEngine.XR.XRSettings.enabled = true;
+
+        base.Awake();
     Impl = new GvrPointerInputModuleImpl();
     EventExecutor = new GvrEventExecutor();
     UpdateImplProperties();
