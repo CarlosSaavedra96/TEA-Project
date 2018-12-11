@@ -6,9 +6,13 @@ public class invisible : MonoBehaviour {
 
     public GameObject obj;
     public float tiempo;
+    private AudioSource fuente;
+    public GameObject obj_audio;
+    public AudioClip salir;
+    private int bandera = 0;
 	// Use this for initialization
 	void Start () {
-        
+        fuente = obj_audio.GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -17,11 +21,18 @@ public class invisible : MonoBehaviour {
         if (tiempo < 7)
         {
             tiempo = tiempo + (Time.deltaTime * 1);
+            
 
         }
         else {
             obj.SetActive(false);
             tiempo = 0;
+            if (bandera == 0)
+            {
+                fuente.clip = salir;
+                fuente.Play();
+                bandera = 1;
+            }
 
         }
     }

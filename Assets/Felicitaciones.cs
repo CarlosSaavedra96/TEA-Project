@@ -8,11 +8,16 @@ public class Felicitaciones : MonoBehaviour {
     public GameObject obj;
     private bool running = false;
     public float tiempo = 0;
+    public AudioClip ganaste;
+    public AudioClip salir;
+    AudioSource fuente;
+    public GameObject audio_obj;
+    private int bandera = 0;
     
 
     // Use this for initialization
     void Start () {
-		
+        fuente = audio_obj.GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -21,6 +26,13 @@ public class Felicitaciones : MonoBehaviour {
         {
             obj.SetActive(true);
             invisible i = new invisible(obj,0);
+            if (bandera == 0)
+            {
+                fuente.clip = ganaste;
+                fuente.Play();
+                bandera = 1;
+            }
+            
             
         }
 
@@ -38,5 +50,6 @@ public class Felicitaciones : MonoBehaviour {
     {
         running = false;
         tiempo = 0;
+        bandera = 0;
     }
 }
